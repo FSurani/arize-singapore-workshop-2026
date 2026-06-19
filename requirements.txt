@@ -14,6 +14,7 @@ python-dotenv>=1.0.1
 # Datasets / experiments / evals (unified Arize Python client, v8+)
 arize>=8.0.0
 pandas>=2.0.0
+nest-asyncio>=1.6.0  # faster async eval submission in notebooks
 
 # The online evaluator (Section 7) uses the `ax` CLI, installed in that step:
 #   pip install arize-ax-cli

@@ -20,6 +20,7 @@ import uuid
 import gradio as gr
 from dotenv import load_dotenv
 from openinference.instrumentation import using_session
+from opentelemetry import trace
 
 from agent.graph import build_agent, run_agent_chat
 
@@ -121,6 +122,11 @@ def build_demo(agent) -> gr.Blocks:
                 reply = run_agent_chat(agent, history)
         except Exception as exc:  # surface errors in the UI instead of crashing
             reply = f"Sorry, something went wrong: {exc}"
+        # Flush this turn's spans so the trace/session shows up in Arize right away.
+        try:
+            trace.get_tracer_provider().force_flush()
+        except Exception:
+            pass
         return history + [{"role": "assistant", "content": reply}]
 
     with gr.Blocks(title="Sunrise Outfitters Support", fill_height=True,
