@@ -1,0 +1,19 @@
+# Core agent (LangGraph ReAct + Gemini)
+langgraph>=0.2.50
+langchain>=0.3.7
+langchain-google-genai>=2.0.0
+
+# Arize tracing
+arize-otel>=0.7.0
+openinference-instrumentation-langchain>=0.1.29
+
+# Frontend + config
+gradio>=4.44.0
+python-dotenv>=1.0.1
+
+# Datasets / experiments / evals (unified Arize Python client, v8+)
+arize>=8.0.0
+pandas>=2.0.0
+
+# The online evaluator (Section 7) uses the `ax` CLI, installed in that step:
+#   pip install arize-ax-cli
