@@ -119,7 +119,8 @@ def build_demo(agent) -> gr.Blocks:
             reply = f"Sorry, something went wrong: {exc}"
         return history + [{"role": "assistant", "content": reply}]
 
-    with gr.Blocks(title="Sunrise Outfitters Support", fill_height=True) as demo:
+    with gr.Blocks(title="Sunrise Outfitters Support", fill_height=True,
+                   theme=THEME, css=CSS) as demo:
         gr.HTML(
             '<div id="app-header">'
             '<div class="logo">&#9968;&#65039;</div>'
@@ -128,6 +129,7 @@ def build_demo(agent) -> gr.Blocks:
             "</div>"
         )
         chatbot = gr.Chatbot(
+            type="messages",
             show_label=False,
             height=460,
             avatar_images=(None, "https://em-content.zobj.net/source/apple/391/sun_2600-fe0f.png"),
@@ -156,4 +158,4 @@ if __name__ == "__main__":
     _require_google_key()
     _setup_tracing()
     demo = build_demo(build_agent())
-    demo.launch(theme=THEME, css=CSS)
+    demo.launch()
