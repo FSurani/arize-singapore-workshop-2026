@@ -19,7 +19,7 @@ import os
 import gradio as gr
 from dotenv import load_dotenv
 
-from agent.graph import build_agent, run_agent
+from agent.graph import build_agent, run_agent_chat
 
 load_dotenv()
 
@@ -112,9 +112,8 @@ def build_demo(agent) -> gr.Blocks:
         return "", history
 
     def on_reply(history: list):
-        user_msg = history[-1]["content"]
         try:
-            reply = run_agent(agent, user_msg)
+            reply = run_agent_chat(agent, history)
         except Exception as exc:  # surface errors in the UI instead of crashing
             reply = f"Sorry, something went wrong: {exc}"
         return history + [{"role": "assistant", "content": reply}]

@@ -98,3 +98,31 @@ def run_agent(agent, user_message: str) -> str:
             if text:
                 return text
     return message_text(messages[-1].content) if messages else ""
+
+
+def run_agent_chat(agent, history: list[dict]) -> str:
+    """Run the agent with full conversation history so it remembers the chat.
+
+    Args:
+        agent: A compiled agent from :func:`build_agent`.
+        history: Chat history as a list of ``{"role", "content"}`` dicts
+            (Gradio "messages" format), ending with the latest user message.
+
+    Returns:
+        The agent's final text reply.
+    """
+    messages = []
+    for turn in history:
+        content = turn.get("content", "")
+        if turn.get("role") == "user":
+            messages.append(HumanMessage(content=content))
+        elif turn.get("role") == "assistant":
+            messages.append(AIMessage(content=content))
+    result = agent.invoke({"messages": messages})
+    out = result["messages"]
+    for message in reversed(out):
+        if isinstance(message, AIMessage) and message.content:
+            text = message_text(message.content)
+            if text:
+                return text
+    return message_text(out[-1].content) if out else ""
