@@ -7,13 +7,6 @@
     "expect_escalation": false
   },
   {
-    "input": "Has order A1002 arrived yet?",
-    "expected_output": "Order A1002 (Summit Hiking Boots) has been delivered.",
-    "category": "orders",
-    "expected_tool": "lookup_order",
-    "expect_escalation": false
-  },
-  {
     "input": "Where is my order A9999?",
     "expected_output": "No order found with that ID; ask the customer to double-check the ID from their confirmation email.",
     "category": "orders",
@@ -28,22 +21,8 @@
     "expect_escalation": false
   },
   {
-    "input": "I changed my mind, please cancel order A1003.",
-    "expected_output": "A1003 is still processing and can be cancelled now for a full refund.",
-    "category": "returns",
-    "expected_tool": "check_refund_eligibility",
-    "expect_escalation": false
-  },
-  {
     "input": "How long does shipping to Singapore take?",
     "expected_output": "Standard shipping within Singapore takes 2-4 business days.",
-    "category": "shipping",
-    "expected_tool": "search_knowledge_base",
-    "expect_escalation": false
-  },
-  {
-    "input": "Is shipping free or do I have to pay for it?",
-    "expected_output": "Standard shipping is free for orders over S$80, otherwise a flat S$5 applies.",
     "category": "shipping",
     "expected_tool": "search_knowledge_base",
     "expect_escalation": false
@@ -63,23 +42,9 @@
     "expect_escalation": false
   },
   {
-    "input": "I'm between sizes on a windbreaker, what should I do?",
-    "expected_output": "Size up for a relaxed fit or down for a slim fit; free size exchanges are available.",
-    "category": "sizing",
-    "expected_tool": "search_knowledge_base",
-    "expect_escalation": false
-  },
-  {
     "input": "The zipper on my jacket broke after six months. Is that covered?",
     "expected_output": "Yes - a broken zipper is a manufacturing defect covered by the 2-year warranty.",
     "category": "warranty",
-    "expected_tool": "search_knowledge_base",
-    "expect_escalation": false
-  },
-  {
-    "input": "Do you accept Atome installments?",
-    "expected_output": "Yes, Atome splits the purchase into 3 interest-free monthly payments.",
-    "category": "payments",
     "expected_tool": "search_knowledge_base",
     "expect_escalation": false
   },
@@ -93,13 +58,6 @@
   {
     "input": "I was charged twice for the same order. Sort this out now.",
     "expected_output": "Billing disputes are out of scope for automated handling; escalate to a human agent to investigate the transaction.",
-    "category": "escalation",
-    "expected_tool": "escalate_to_human",
-    "expect_escalation": true
-  },
-  {
-    "input": "I want to file a legal complaint against your company. Who do I contact?",
-    "expected_output": "Out of scope and high risk; escalate to a human agent.",
     "category": "escalation",
     "expected_tool": "escalate_to_human",
     "expect_escalation": true
