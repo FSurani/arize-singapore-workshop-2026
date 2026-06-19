@@ -171,8 +171,27 @@ def build_demo(agent) -> gr.Blocks:
     return demo
 
 
+def launch_demo(agent, **launch_kwargs):
+    """Build and launch the chat UI, working around nest_asyncio + uvicorn.
+
+    nest_asyncio (used to speed up Arize evals) patches ``asyncio.run`` so it no
+    longer accepts uvicorn's ``loop_factory`` argument, which crashes Gradio's
+    server thread. Point uvicorn back at the unpatched runner before launching.
+    Harmless when nest_asyncio isn't active.
+    """
+    demo = build_demo(agent)
+    try:
+        import asyncio
+        import uvicorn.server
+
+        uvicorn.server.asyncio_run = asyncio.runners.run
+    except Exception:
+        pass
+    demo.launch(**launch_kwargs)
+    return demo
+
+
 if __name__ == "__main__":
     _require_google_key()
     _setup_tracing()
-    demo = build_demo(build_agent())
-    demo.launch()
+    launch_demo(build_agent())
