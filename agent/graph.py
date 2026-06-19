@@ -36,7 +36,7 @@ SYSTEM_PROMPT = (
     "- Keep replies friendly and under ~120 words."
 )
 
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
 
 
 def build_agent(

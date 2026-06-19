@@ -31,7 +31,7 @@ TASK_NAME = "support-resolution-online"
 
 # Arize AI-integration provider + judge model for Gemini.
 PROVIDER = "gemini"
-JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gemini-2.5-flash")
+JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gemini-3.1-flash-lite")
 
 RESOLUTION_TEMPLATE = """You are evaluating a customer-support agent for Sunrise Outfitters, an online outdoor retailer.
 

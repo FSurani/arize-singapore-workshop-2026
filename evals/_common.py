@@ -103,7 +103,7 @@ def escalation_appropriate(output, dataset_row) -> EvaluationResult:
 
 # --- LLM-as-a-judge evaluators (Gemini) ------------------------------------
 
-JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gemini-2.5-flash")
+JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gemini-3.1-flash-lite")
 
 
 def _judge(system: str, user: str) -> tuple[str, str]:

@@ -88,7 +88,7 @@ ax ai-integrations create --name workshop-gemini --provider gemini \
 ax evaluators create-template-evaluator --name support-resolution \
   --space "$ARIZE_SPACE_ID" --commit-message "initial version" \
   --template-name resolution --template '<judge prompt with {{input}}/{{output}}>' \
-  --ai-integration-id <AI_INTEGRATION_ID> --model-name gemini-2.5-flash \
+  --ai-integration-id <AI_INTEGRATION_ID> --model-name gemini-3.1-flash-lite \
   --classification-choices '{"resolved": 1, "not_resolved": 0}' \
   --include-explanation --data-granularity trace
 

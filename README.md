@@ -8,7 +8,7 @@ You build "Sunny", the support assistant for a fictional outdoor retailer
 (Sunrise Outfitters). The agent does **real retrieval** over a small policy
 knowledge base and **escalates** hard or high-risk requests to a human — the
 most common enterprise customer-support pattern — then you trace and evaluate
-it in Arize. The agent uses **Google Gemini** (`gemini-2.5-flash`).
+it in Arize. The agent uses **Google Gemini** (`gemini-3.1-flash-lite`).
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FSurani/arize-singapore-workshop-2026/blob/main/notebook/arize_workshop.ipynb)
 
@@ -17,7 +17,7 @@ it in Arize. The agent uses **Google Gemini** (`gemini-2.5-flash`).
 1. **Build** a tool-using agent (orders, refunds, knowledge-base retrieval, escalation).
 2. **Trace** it into Arize with two lines of auto-instrumentation (incl. retrieval spans).
 3. **Offline-eval** it against a curated golden dataset (a code check + an LLM judge).
-4. **Experiment**: compare two models (`gemini-2.5-flash` vs `gemini-2.5-pro`) side by side.
+4. **Experiment**: compare two models (`gemma-4-31b-it` vs `gemini-3.1-flash-lite`) side by side.
 5. **Chat live** via a Gradio UI and watch your own traces appear in Arize.
 
 ## Before you arrive (prerequisites)
@@ -133,9 +133,9 @@ client = ArizeClient(api_key=ARIZE_API_KEY)
 client.datasets.create(name="sunrise-support-golden", space=SPACE_ID, examples=[...])
 
 # Run the agent over the dataset and score each row with your evaluators.
-client.experiments.run(name="gemini-2.5-flash", dataset="sunrise-support-golden",
+client.experiments.run(name="gemini-3.1-flash-lite", dataset="sunrise-support-golden",
                        space=SPACE_ID, task=task, evaluators=[tool_selection, groundedness])
 ```
 
-Run two experiments over the same dataset (e.g. `gemini-2.5-flash` vs
-`gemini-2.5-pro`) to compare them in Arize's Experiment Comparison view.
+Run two experiments over the same dataset (e.g. `gemma-4-31b-it` vs
+`gemini-3.1-flash-lite`) to compare them in Arize's Experiment Comparison view.
