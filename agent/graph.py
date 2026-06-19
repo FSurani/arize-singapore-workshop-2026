@@ -36,7 +36,7 @@ SYSTEM_PROMPT = (
     "- Keep replies friendly and under ~120 words."
 )
 
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemma-4-26b-a4b-it")
+DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemma-4-31b-it")
 
 
 def build_agent(

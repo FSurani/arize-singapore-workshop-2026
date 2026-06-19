@@ -8,7 +8,7 @@ You build "Sunny", the support assistant for a fictional outdoor retailer
 (Sunrise Outfitters). The agent does **real retrieval** over a small policy
 knowledge base and **escalates** hard or high-risk requests to a human — the
 most common enterprise customer-support pattern — then you trace and evaluate
-it in Arize. The agent's workhorse model is Google's **`gemma-4-26b-a4b-it`**.
+it in Arize. The agent's workhorse model is Google's **`gemma-4-31b-it`**.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FSurani/arize-singapore-workshop-2026/blob/main/notebook/arize_workshop.ipynb)
 
