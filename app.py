@@ -15,9 +15,11 @@ are also set, every conversation is traced into Arize.
 from __future__ import annotations
 
 import os
+import uuid
 
 import gradio as gr
 from dotenv import load_dotenv
+from openinference.instrumentation import using_session
 
 from agent.graph import build_agent, run_agent_chat
 
@@ -111,9 +113,12 @@ def build_demo(agent) -> gr.Blocks:
         history = (history or []) + [{"role": "user", "content": message}]
         return "", history
 
-    def on_reply(history: list):
+    def on_reply(history: list, session_id: str):
+        # Tag every span in this turn with the conversation's session id so the
+        # whole multi-turn chat groups into one Session in Arize.
         try:
-            reply = run_agent_chat(agent, history)
+            with using_session(session_id):
+                reply = run_agent_chat(agent, history)
         except Exception as exc:  # surface errors in the UI instead of crashing
             reply = f"Sorry, something went wrong: {exc}"
         return history + [{"role": "assistant", "content": reply}]
@@ -146,9 +151,16 @@ def build_demo(agent) -> gr.Blocks:
         gr.Examples(examples=EXAMPLES, inputs=msg, label="Try one")
         clear = gr.Button("Clear conversation", variant="secondary", size="sm")
 
-        msg.submit(on_submit, [msg, chatbot], [msg, chatbot]).then(on_reply, chatbot, chatbot)
-        send.click(on_submit, [msg, chatbot], [msg, chatbot]).then(on_reply, chatbot, chatbot)
-        clear.click(lambda: [], None, chatbot)
+        # One session id per conversation, so traces group into a Session in Arize.
+        session_id = gr.State()
+        demo.load(lambda: uuid.uuid4().hex, None, session_id)
+
+        msg.submit(on_submit, [msg, chatbot], [msg, chatbot]).then(
+            on_reply, [chatbot, session_id], chatbot)
+        send.click(on_submit, [msg, chatbot], [msg, chatbot]).then(
+            on_reply, [chatbot, session_id], chatbot)
+        # Clearing starts a fresh conversation -> fresh session id.
+        clear.click(lambda: ([], uuid.uuid4().hex), None, [chatbot, session_id])
 
     return demo
 
