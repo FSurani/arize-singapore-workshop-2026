@@ -17,7 +17,7 @@ it in Arize. The agent's workhorse model is OpenAI's **`gpt-4o-mini`**.
 1. **Build** a tool-using agent (orders, refunds, knowledge-base retrieval, escalation).
 2. **Trace** it into Arize with two lines of auto-instrumentation (incl. retrieval spans).
 3. **Offline-eval** it against a curated golden dataset (a code check + an LLM judge).
-4. **Experiment**: compare two models (`gpt-4o-mini` vs `gpt-4o`) side by side.
+4. **Experiment**: compare two models (`gpt-3.5-turbo` vs `gpt-4o-mini`) side by side.
 5. **Chat live** via a Gradio UI and watch your own traces appear in Arize.
 
 ## Before you arrive (prerequisites)
@@ -137,5 +137,5 @@ client.experiments.run(name="gpt-4o-mini", dataset="sunrise-support-golden",
                        space=SPACE_ID, task=task, evaluators=[tool_selection, groundedness])
 ```
 
-Run two experiments over the same dataset (e.g. `gpt-4o-mini` vs
-`gpt-4o`) to compare them in Arize's Experiment Comparison view.
+Run two experiments over the same dataset (e.g. `gpt-3.5-turbo` vs
+`gpt-4o-mini`) to compare them in Arize's Experiment Comparison view.
