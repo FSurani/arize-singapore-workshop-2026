@@ -8,7 +8,7 @@ You build "Sunny", the support assistant for a fictional outdoor retailer
 (Sunrise Outfitters). The agent does **real retrieval** over a small policy
 knowledge base and **escalates** hard or high-risk requests to a human — the
 most common enterprise customer-support pattern — then you trace and evaluate
-it in Arize. The agent's workhorse model is Google's **`gemma-4-31b-it`**.
+it in Arize. The agent's workhorse model is OpenAI's **`gpt-4o-mini`**.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/FSurani/arize-singapore-workshop-2026/blob/main/notebook/arize_workshop.ipynb)
 
@@ -17,14 +17,14 @@ it in Arize. The agent's workhorse model is Google's **`gemma-4-31b-it`**.
 1. **Build** a tool-using agent (orders, refunds, knowledge-base retrieval, escalation).
 2. **Trace** it into Arize with two lines of auto-instrumentation (incl. retrieval spans).
 3. **Offline-eval** it against a curated golden dataset (a code check + an LLM judge).
-4. **Experiment**: compare two models (`gemma-4-31b-it` vs `gemini-3.1-flash-lite`) side by side.
+4. **Experiment**: compare two models (`gpt-4o-mini` vs `gpt-4o`) side by side.
 5. **Chat live** via a Gradio UI and watch your own traces appear in Arize.
 
 ## Before you arrive (prerequisites)
 
 The venue has limited time, so please have these ready **before** the session:
 
-1. **A Google AI Studio API key** (`GOOGLE_API_KEY`) — get one at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
+1. **An OpenAI API key** (`OPENAI_API_KEY`) — get one at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
 2. **A free Arize account** at [app.arize.com](https://app.arize.com), and your
    **Space ID + API key** from **Settings → Space API Keys**.
 
@@ -57,7 +57,7 @@ bottom and enter your three keys when prompted.
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-cp .env.example .env   # add GOOGLE_API_KEY (+ Arize keys to enable tracing)
+cp .env.example .env   # add OPENAI_API_KEY (+ Arize keys to enable tracing)
 python app.py          # opens the Gradio chat UI, traced into Arize
 ```
 
@@ -88,7 +88,7 @@ arize-singapore-workshop/
 │   ├── knowledge/      # tiny policy KB (shipping, returns, sizing, warranty, payments)
 │   ├── retrieval.py    # in-memory vector store + search_knowledge_base()
 │   ├── tools.py        # order lookup, refund check, KB retrieval, escalation
-│   └── graph.py        # LangGraph ReAct agent factory (Gemini)
+│   └── graph.py        # LangGraph ReAct agent factory (OpenAI)
 ├── app.py              # Gradio chat UI (traces into Arize if keys are set)
 ├── notebook/
 │   └── arize_workshop.ipynb   # the workshop notebook
@@ -133,9 +133,9 @@ client = ArizeClient(api_key=ARIZE_API_KEY)
 client.datasets.create(name="sunrise-support-golden", space=SPACE_ID, examples=[...])
 
 # Run the agent over the dataset and score each row with your evaluators.
-client.experiments.run(name="gemini-3.1-flash-lite", dataset="sunrise-support-golden",
+client.experiments.run(name="gpt-4o-mini", dataset="sunrise-support-golden",
                        space=SPACE_ID, task=task, evaluators=[tool_selection, groundedness])
 ```
 
-Run two experiments over the same dataset (e.g. `gemma-4-31b-it` vs
-`gemini-3.1-flash-lite`) to compare them in Arize's Experiment Comparison view.
+Run two experiments over the same dataset (e.g. `gpt-4o-mini` vs
+`gpt-4o`) to compare them in Arize's Experiment Comparison view.

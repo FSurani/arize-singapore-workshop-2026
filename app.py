@@ -8,7 +8,7 @@ Run locally:
     pip install -r requirements.txt
     python app.py
 
-Only GOOGLE_API_KEY is strictly required. If ARIZE_SPACE_ID and ARIZE_API_KEY
+Only OPENAI_API_KEY is strictly required. If ARIZE_SPACE_ID and ARIZE_API_KEY
 are also set, every conversation is traced into Arize.
 """
 
@@ -80,11 +80,11 @@ footer {display: none !important;}
 SUBTITLE = "AI support assistant - ask about orders, shipping, returns & sizing"
 
 
-def _require_google_key() -> None:
-    if not os.getenv("GOOGLE_API_KEY"):
+def _require_openai_key() -> None:
+    if not os.getenv("OPENAI_API_KEY"):
         raise SystemExit(
-            "GOOGLE_API_KEY is not set. Copy .env.example to .env and add your "
-            "Google AI Studio API key, or export GOOGLE_API_KEY before running."
+            "OPENAI_API_KEY is not set. Copy .env.example to .env and add your "
+            "OpenAI API key, or export OPENAI_API_KEY before running."
         )
 
 
@@ -192,6 +192,6 @@ def launch_demo(agent, **launch_kwargs):
 
 
 if __name__ == "__main__":
-    _require_google_key()
+    _require_openai_key()
     _setup_tracing()
     launch_demo(build_agent())

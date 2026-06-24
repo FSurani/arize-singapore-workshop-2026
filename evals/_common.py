@@ -101,16 +101,16 @@ def escalation_appropriate(output, dataset_row) -> EvaluationResult:
     )
 
 
-# --- LLM-as-a-judge evaluators (Gemini) ------------------------------------
+# --- LLM-as-a-judge evaluators (OpenAI) ------------------------------------
 
-JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gemini-3.1-flash-lite")
+JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gpt-4o-mini")
 
 
 def _judge(system: str, user: str) -> tuple[str, str]:
-    """Tiny LLM-judge helper using Gemini. Returns (label, explanation)."""
-    from langchain_google_genai import ChatGoogleGenerativeAI
+    """Tiny LLM-judge helper using OpenAI. Returns (label, explanation)."""
+    from langchain_openai import ChatOpenAI
 
-    llm = ChatGoogleGenerativeAI(model=JUDGE_MODEL, temperature=0)
+    llm = ChatOpenAI(model=JUDGE_MODEL, temperature=0)
     resp = llm.invoke([SystemMessage(content=system), HumanMessage(content=user)])
     text = message_text(resp.content).strip()
     first = text.splitlines()[0].lower() if text else ""

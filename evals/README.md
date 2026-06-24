@@ -7,7 +7,7 @@ continuous **online evaluator** uses the **`ax` CLI**.
 All scripts read credentials from the environment:
 
 ```bash
-export GOOGLE_API_KEY="..."
+export OPENAI_API_KEY="sk-..."
 export ARIZE_SPACE_ID="U3BhY2U6..."
 export ARIZE_API_KEY="ak-..."     # Settings -> Space API Keys
 ```
@@ -72,7 +72,7 @@ pip install arize-ax-cli
 python evals/setup_online_eval.py
 ```
 
-Creates a Gemini AI integration (from `GOOGLE_API_KEY`), a template
+Creates an OpenAI AI integration (from `OPENAI_API_KEY`), a template
 (LLM-as-a-judge) evaluator (`resolved` / `not_resolved`), and a **continuous,
 trace-level** evaluation task on the project, then triggers a run. New traces
 are scored automatically. Watch results under the project's **Evals** tab.
@@ -81,14 +81,14 @@ are scored automatically. Watch results under the project's **Evals** tab.
 
 ```bash
 # 1) AI integration that powers the LLM judge
-ax ai-integrations create --name workshop-gemini --provider gemini \
-  --api-key "$GOOGLE_API_KEY" --enable-default-models --function-calling-enabled
+ax ai-integrations create --name workshop-openai --provider openAI \
+  --api-key "$OPENAI_API_KEY" --enable-default-models --function-calling-enabled
 
 # 2) Template (LLM-as-a-judge) evaluator
 ax evaluators create-template-evaluator --name support-resolution \
   --space "$ARIZE_SPACE_ID" --commit-message "initial version" \
   --template-name resolution --template '<judge prompt with {{input}}/{{output}}>' \
-  --ai-integration-id <AI_INTEGRATION_ID> --model-name gemini-3.1-flash-lite \
+  --ai-integration-id <AI_INTEGRATION_ID> --model-name gpt-4o-mini \
   --classification-choices '{"resolved": 1, "not_resolved": 0}' \
   --include-explanation --data-granularity trace
 

@@ -1,9 +1,9 @@
 """Lightweight retrieval over the Sunrise Outfitters knowledge base.
 
 Builds a small in-memory vector store (``InMemoryVectorStore`` from
-``langchain-core``) over the markdown docs in ``agent/knowledge/`` using Gemini
-embeddings (``gemini-embedding-2``). It is tiny enough to build in a couple of
-seconds on a free Colab runtime and needs no external vector database.
+``langchain-core``) over the markdown docs in ``agent/knowledge/`` using OpenAI
+embeddings (``text-embedding-3-small``). It is tiny enough to build in a couple
+of seconds on a free Colab runtime and needs no external vector database.
 
 The store is built lazily and cached, so the first ``search_knowledge_base``
 call pays the (small) embedding cost and later calls are instant.
@@ -17,10 +17,10 @@ from pathlib import Path
 
 from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 
 KNOWLEDGE_DIR = Path(__file__).parent / "knowledge"
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "gemini-embedding-2")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
 DEFAULT_K = 3
 
 
@@ -37,7 +37,7 @@ def _load_documents() -> list[Document]:
 @lru_cache(maxsize=1)
 def get_vector_store() -> InMemoryVectorStore:
     """Build (once) and return the in-memory vector store over the KB."""
-    embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL)
+    embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL)
     return InMemoryVectorStore.from_documents(_load_documents(), embedding=embeddings)
 
 

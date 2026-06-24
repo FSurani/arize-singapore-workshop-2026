@@ -12,7 +12,7 @@ while order/escalation behavior stays similar. That contrast is the point:
 retrieval is what keeps policy answers grounded.
 
 Usage:
-    export GOOGLE_API_KEY=...  ARIZE_SPACE_ID=...  ARIZE_API_KEY=...
+    export OPENAI_API_KEY=...  ARIZE_SPACE_ID=...  ARIZE_API_KEY=...
     python evals/run_experiment.py
 """
 

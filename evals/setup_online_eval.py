@@ -2,14 +2,14 @@
 
 Promoted to a core part of the workshop (Section 7). It:
 
-  1. Creates (or reuses) a Gemini AI integration in Arize from your GOOGLE_API_KEY.
+  1. Creates (or reuses) an OpenAI AI integration in Arize from your OPENAI_API_KEY.
   2. Creates a template (LLM-as-a-judge) evaluator: resolved / not_resolved.
   3. Attaches it to the `arize-singapore-workshop` project as a CONTINUOUS,
      trace-level evaluation task, then triggers an on-demand run.
 
 Prerequisites:
   pip install arize-ax-cli
-  export GOOGLE_API_KEY=...
+  export OPENAI_API_KEY=...
   export ARIZE_SPACE_ID=U3BhY2U6...
   export ARIZE_API_KEY=ak-...        # CLI auth; a developer key from
                                      # app.arize.com/admin > API Keys also works
@@ -29,9 +29,9 @@ import time
 EVALUATOR_NAME = "support-resolution"
 TASK_NAME = "support-resolution-online"
 
-# Arize AI-integration provider + judge model for Gemini.
-PROVIDER = "gemini"
-JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gemini-3.1-flash-lite")
+# Arize AI-integration provider + judge model for OpenAI.
+PROVIDER = "openAI"
+JUDGE_MODEL = os.getenv("JUDGE_MODEL", "gpt-4o-mini")
 
 RESOLUTION_TEMPLATE = """You are evaluating a customer-support agent for Sunrise Outfitters, an online outdoor retailer.
 
@@ -61,7 +61,7 @@ def ax(args, parse=False):
     return json.loads(out[min(starts):])
 
 
-def gemini_integration_id():
+def openai_integration_id():
     data = ax(["ai-integrations", "list", "-o", "json"], parse=True)
     for i in data.get("ai_integrations", []):
         if i.get("provider", "").lower() == PROVIDER.lower():
@@ -85,23 +85,23 @@ def main():
     space = os.environ.get("ARIZE_SPACE_ID")
     if not space:
         raise SystemExit("ARIZE_SPACE_ID is not set.")
-    if not os.environ.get("GOOGLE_API_KEY"):
-        raise SystemExit("GOOGLE_API_KEY is not set (needed to create the AI integration).")
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise SystemExit("OPENAI_API_KEY is not set (needed to create the AI integration).")
 
     # 1) AI integration
-    integration = gemini_integration_id()
+    integration = openai_integration_id()
     if integration is None:
-        print("Creating a Gemini AI integration from GOOGLE_API_KEY...")
+        print("Creating an OpenAI AI integration from OPENAI_API_KEY...")
         ax([
             "ai-integrations", "create",
-            "--name", "workshop-gemini",
+            "--name", "workshop-openai",
             "--provider", PROVIDER,
-            "--api-key", os.environ["GOOGLE_API_KEY"],
+            "--api-key", os.environ["OPENAI_API_KEY"],
             "--enable-default-models",
             "--function-calling-enabled",
             "-o", "json",
         ], parse=True)
-        integration = gemini_integration_id()
+        integration = openai_integration_id()
     print("AI integration id:", integration)
 
     # 2) Evaluator

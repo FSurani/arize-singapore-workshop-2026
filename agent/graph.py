@@ -1,10 +1,10 @@
 """LangGraph customer-support agent for Sunrise Outfitters.
 
-Uses LangGraph's prebuilt ReAct agent with Gemini (ChatGoogleGenerativeAI) and
-the support tools. Because LangGraph runs on LangChain runnables, a single
-LangChain OpenInference instrumentor (set up in the notebook / ``app.py``)
-captures the graph, the LLM calls, and every tool invocation - including the
-knowledge-base retrieval - as spans in Arize.
+Uses LangGraph's prebuilt ReAct agent with OpenAI (ChatOpenAI) and the support
+tools. Because LangGraph runs on LangChain runnables, a single LangChain
+OpenInference instrumentor (set up in the notebook / ``app.py``) captures the
+graph, the LLM calls, and every tool invocation - including the knowledge-base
+retrieval - as spans in Arize.
 """
 
 from __future__ import annotations
@@ -12,7 +12,7 @@ from __future__ import annotations
 import os
 
 from langchain_core.messages import AIMessage, HumanMessage
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
 from agent.tools import SUPPORT_TOOLS
@@ -36,7 +36,7 @@ SYSTEM_PROMPT = (
     "- Keep replies friendly and under ~120 words."
 )
 
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemma-4-31b-it")
+DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 
 def build_agent(
@@ -48,7 +48,7 @@ def build_agent(
     """Build and return the compiled LangGraph ReAct agent.
 
     Args:
-        model: Gemini chat model name.
+        model: OpenAI chat model name.
         temperature: Sampling temperature.
         prompt: System prompt. Override to compare prompt variants in experiments.
         tools: Tool list. Override (e.g. retrieval off) to compare variants.
@@ -56,16 +56,16 @@ def build_agent(
     Returns:
         A compiled LangGraph agent that accepts ``{"messages": [...]}``.
     """
-    llm = ChatGoogleGenerativeAI(model=model, temperature=temperature)
+    llm = ChatOpenAI(model=model, temperature=temperature)
     return create_react_agent(llm, tools=tools, prompt=prompt)
 
 
 def message_text(content) -> str:
     """Flatten a LangChain message ``content`` to plain text.
 
-    Gemini "thinking" models can return ``content`` as a list of parts
-    (e.g. ``[{"type": "text", "text": "..."}]``) instead of a string. This
-    normalizes both shapes to a single string.
+    OpenAI returns ``content`` as a string, but some models return a list of
+    parts (e.g. ``[{"type": "text", "text": "..."}]``). This normalizes both
+    shapes to a single string.
     """
     if isinstance(content, str):
         return content

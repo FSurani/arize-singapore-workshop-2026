@@ -12,7 +12,7 @@ Results and traces log to Arize, where you can open the run and inspect
 per-example scores.
 
 Usage:
-    export GOOGLE_API_KEY=...  ARIZE_SPACE_ID=...  ARIZE_API_KEY=...
+    export OPENAI_API_KEY=...  ARIZE_SPACE_ID=...  ARIZE_API_KEY=...
     python evals/offline_evals.py
 """
 
