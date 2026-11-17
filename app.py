@@ -22,7 +22,7 @@ from dotenv import load_dotenv
 from openinference.instrumentation import using_session
 from opentelemetry import trace
 
-from agent.graph import build_agent, run_agent_chat
+from agent.graph import build_agent, run_agent
 
 load_dotenv()
 
@@ -115,11 +115,11 @@ def build_demo(agent) -> gr.Blocks:
         return "", history
 
     def on_reply(history: list, session_id: str):
-        # Tag every span in this turn with the conversation's session id so the
-        # whole multi-turn chat groups into one Session in Arize.
+        # Each message is answered independently (no memory), like Section 3 of
+        # the notebook. The session id just groups this chat's traces in Arize.
         try:
             with using_session(session_id):
-                reply = run_agent_chat(agent, history)
+                reply = run_agent(agent, history[-1]["content"])
         except Exception as exc:  # surface errors in the UI instead of crashing
             reply = f"Sorry, something went wrong: {exc}"
         # Flush this turn's spans so the trace/session shows up in Arize right away.

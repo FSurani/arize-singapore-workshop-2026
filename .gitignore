@@ -4,6 +4,12 @@
 # Internal planning spec (not part of the public workshop)
 arize-workshop-requirements.md
 
+# Private facilitator notes (not part of the public workshop)
+WORKSHOP_NOTES.md
+
+# Gradio local cache
+.gradio/
+
 # Python
 __pycache__/
 *.py[cod]
